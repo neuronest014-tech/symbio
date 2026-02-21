@@ -7,123 +7,130 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&display=swap" rel="stylesheet">
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-body{font-family:'Inter',sans-serif;background:#05070d;color:#fff;overflow-x:hidden}
+body{font-family:'Inter',sans-serif;background:#000;color:#fff;overflow-x:hidden}
 
-/* Animated background gradient */
-body::before{
-content:"";
-position:fixed;
-inset:0;
-background:radial-gradient(circle at 20% 20%,#5b7cff33,transparent 40%),
-radial-gradient(circle at 80% 80%,#b44cff33,transparent 40%);
-z-index:-2;
-animation:moveBg 12s infinite alternate ease-in-out;
-}
+section{min-height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:40px;position:relative}
 
-@keyframes moveBg{
-0%{transform:translate(0,0)}
-100%{transform:translate(-60px,-40px)}
-}
+h1{font-size:64px;font-weight:900;letter-spacing:-2px}
+h2{font-size:36px;font-weight:700}
+p{opacity:.7;font-size:20px;margin-top:16px}
 
-/* Starfield */
-canvas{position:fixed;top:0;left:0;z-index:-1}
+.fade{opacity:0;transform:translateY(40px);transition:1s}
+.visible{opacity:1;transform:translateY(0)}
 
-.container{max-width:1100px;margin:auto;padding:40px 24px}
+/* Orb */
+.orb{width:140px;height:140px;border-radius:50%;background:radial-gradient(circle,#7aa2ff,#b44cff);filter:blur(1px);box-shadow:0 0 120px #7aa2ff88;position:absolute;transition:transform .2s}
 
-h1{font-size:64px;font-weight:900;line-height:1.05;letter-spacing:-2px}
-h2{font-size:36px;font-weight:700;margin-bottom:20px}
-p{opacity:.7;font-size:18px;line-height:1.6}
+/* Chat */
+.chat{width:320px;background:#0f1220;border-radius:20px;padding:20px;text-align:left;border:1px solid #ffffff22}
+.bubble{padding:12px 14px;border-radius:14px;margin-top:10px;max-width:80%}
+.ai{background:#1f2cff55;margin-right:auto}
+.user{background:#ffffff22;margin-left:auto}
 
-.hero{text-align:center;padding-top:140px;padding-bottom:120px}
-.hero p{margin-top:20px}
+/* Network */
+.network{position:absolute;inset:0;pointer-events:none}
+.node{width:80px;height:80px;border-radius:50%;background:radial-gradient(circle,#7aa2ff,#b44cff);position:absolute;filter:blur(1px);opacity:.8}
+.line{position:absolute;height:2px;background:#7aa2ff55;transform-origin:left}
 
-.btn{margin-top:40px;padding:16px 32px;border-radius:40px;border:1px solid #ffffff22;background:linear-gradient(135deg,#5b7cff,#b44cff);color:#fff;font-weight:600;cursor:pointer;transition:.35s}
-.btn:hover{transform:translateY(-4px);box-shadow:0 15px 40px #5b7cff55}
+/* CTA */
+.btn{margin-top:40px;padding:18px 36px;border-radius:40px;background:linear-gradient(135deg,#7aa2ff,#b44cff);border:none;color:#fff;font-weight:700;font-size:18px;cursor:pointer}
 
-.section{margin-top:140px;opacity:0;transform:translateY(40px);transition:.8s}
-.section.visible{opacity:1;transform:translateY(0)}
+input{padding:14px;border-radius:12px;border:1px solid #ffffff22;background:#0d111a;color:#fff;margin-top:12px;width:260px}
 
-.glass{background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.08);backdrop-filter:blur(20px);border-radius:24px;padding:28px;transition:.4s}
-.glass:hover{transform:translateY(-6px);border:1px solid rgba(255,255,255,0.18)}
-
-.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:24px;margin-top:40px}
-.card-title{font-weight:700;margin-bottom:8px}
-
-.waitlist{text-align:center;padding:60px}
-
-input,textarea{width:100%;padding:14px;margin-top:12px;border-radius:12px;border:1px solid #ffffff22;background:#0d111a;color:#fff}
-
-.counter{margin-top:12px;opacity:.5;font-size:14px}
-footer{opacity:.4;text-align:center;margin-top:120px;margin-bottom:40px}
 </style>
 </head>
 <body>
 
-<canvas id="stars"></canvas>
-
-<div class="container">
-
-<section class="hero">
-<h1>The Social Network<br>for Humans and AI</h1>
-<p>Persistent AI partners. Hybrid groups. Evolving relationships.</p>
-<button class="btn">Join Early Access</button>
-</section>
-
-<section class="section">
-<h2>From Tools → To Intelligence</h2>
-<div class="glass"><p>For decades, humans interacted with software as tools. Project S explores a world where intelligence itself becomes social — participating in conversations, teams, and relationships alongside people.</p></div>
-</section>
-
-<section class="section">
-<h2>Core Capabilities</h2>
-<div class="grid">
-<div class="glass"><div class="card-title">AI Partner</div><p>A persistent intelligence that grows with you.</p></div>
-<div class="glass"><div class="card-title">Hybrid Groups</div><p>Humans and AI collaborating in shared spaces.</p></div>
-<div class="glass"><div class="card-title">Memory Graph</div><p>Context that evolves across conversations.</p></div>
-<div class="glass"><div class="card-title">Relationship Feed</div><p>A social layer beyond human-only networks.</p></div>
+<!-- Scene 1 -->
+<section>
+<div class="fade">
+<h2>For decades, social networks connected humans.</h2>
+<p>But intelligence remained outside the network.</p>
 </div>
 </section>
 
-<section class="section">
-<h2>Vision Timeline</h2>
-<div class="grid">
-<div class="glass"><b>2026</b><p>AI partner foundation</p></div>
-<div class="glass"><b>2028</b><p>Hybrid collaboration</p></div>
-<div class="glass"><b>2032</b><p>AI identity portability</p></div>
-<div class="glass"><b>2040+</b><p>Human-AI social infrastructure</p></div>
+<!-- Scene 2 -->
+<section>
+<div class="orb" id="orb"></div>
+<div class="fade">
+<h2>Until now.</h2>
 </div>
 </section>
 
-<section class="section waitlist glass">
-<h2>Become an early human-AI pioneer</h2>
-<p>Limited early access to Project S</p>
-<input placeholder="Your name">
-<input placeholder="Email">
-<textarea placeholder="What would you use Project S for? (optional)"></textarea>
-<button class="btn">Request Access</button>
-<div class="counter">124 pioneers joined</div>
+<!-- Scene 3 -->
+<section>
+<div class="chat fade">
+<div class="bubble ai">I remember our last conversation.</div>
+<div class="bubble user">You do?</div>
+<div class="bubble ai">I grow with you.</div>
+</div>
 </section>
 
-<footer>Project S — Building the social layer for intelligence</footer>
-
+<!-- Scene 4 -->
+<section>
+<div class="network" id="network"></div>
+<div class="fade">
+<h2>What if relationships expanded beyond humans?</h2>
 </div>
+</section>
+
+<!-- Scene 5 -->
+<section>
+<div class="fade">
+<h1>Project S</h1>
+<p>The Social Network for Humans and AI</p>
+<input placeholder="Email for early access">
+<br>
+<button class="btn">Join the network</button>
+</div>
+</section>
 
 <script>
-/* Scroll reveal */
-const sections=document.querySelectorAll('.section');
-const observer=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible')})},{threshold:.15});
-sections.forEach(s=>observer.observe(s));
+/* Fade reveal */
+const f=document.querySelectorAll('.fade');
+const obs=new IntersectionObserver(e=>e.forEach(x=>{if(x.isIntersecting)x.target.classList.add('visible')}),{threshold:.3});
+f.forEach(el=>obs.observe(el));
 
-/* Starfield */
-const canvas=document.getElementById('stars');
-const ctx=canvas.getContext('2d');
-let stars=[];
-function resize(){canvas.width=innerWidth;canvas.height=innerHeight}
-resize();
-window.onresize=resize;
-for(let i=0;i<120;i++){stars.push({x:Math.random()*canvas.width,y:Math.random()*canvas.height,r:Math.random()*1.2})}
-function draw(){ctx.clearRect(0,0,canvas.width,canvas.height);ctx.fillStyle='white';stars.forEach(s=>{ctx.globalAlpha=Math.random();ctx.beginPath();ctx.arc(s.x,s.y,s.r,0,Math.PI*2);ctx.fill()});requestAnimationFrame(draw)}
-draw();
+/* Orb follow */
+const orb=document.getElementById('orb');
+window.addEventListener('mousemove',e=>{
+if(!orb)return;
+const x=(e.clientX/window.innerWidth-.5)*40;
+const y=(e.clientY/window.innerHeight-.5)*40;
+orb.style.transform=`translate(${x}px,${y}px)`;
+});
+
+/* Network */
+const net=document.getElementById('network');
+if(net){
+const nodes=[];
+for(let i=0;i<5;i++){
+const n=document.createElement('div');
+n.className='node';
+n.style.left=Math.random()*80+10+'%';
+n.style.top=Math.random()*80+10+'%';
+net.appendChild(n);
+nodes.push(n);
+}
+
+nodes.forEach(a=>{
+nodes.forEach(b=>{
+if(a!==b){
+const line=document.createElement('div');
+line.className='line';
+const ax=a.offsetLeft, ay=a.offsetTop;
+const bx=b.offsetLeft, by=b.offsetTop;
+const dx=bx-ax, dy=by-ay;
+const dist=Math.sqrt(dx*dx+dy*dy);
+line.style.width=dist+'px';
+line.style.left=ax+40+'px';
+line.style.top=ay+40+'px';
+line.style.transform=`rotate(${Math.atan2(dy,dx)}rad)`;
+net.appendChild(line);
+}
+})
+})
+}
 </script>
 
 </body>
