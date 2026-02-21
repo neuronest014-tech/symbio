@@ -125,6 +125,53 @@ orb.style.marginLeft=x+'px';
 orb.style.marginTop=y+'px';
 });
 </script>
+<script>
+const canvas = document.getElementById("canvas");
+const input = document.getElementById("input");
+
+function randomPos(){
+  return {
+    x: Math.random()*(window.innerWidth-300),
+    y: Math.random()*(window.innerHeight-200)
+  }
+}
+
+function addNode(text,type){
+  const node = document.createElement("div");
+  node.className = "node "+type;
+  node.innerText = text;
+
+  const pos = randomPos();
+  node.style.left = pos.x+"px";
+  node.style.top = pos.y+"px";
+
+  canvas.appendChild(node);
+  return node;
+}
+
+function updateNode(node,text){
+  node.innerText = text;
+}
+
+async function sendMessage(){
+  const text = input.value.trim();
+  if(!text) return;
+
+  addNode(text,"user");
+  input.value="";
+
+  const thinking = addNode("Symbio thinking...", "ai");
+
+  // TEMP DEMO RESPONSE (to verify button works)
+  setTimeout(()=>{
+    updateNode(thinking,"Symbio is alive ✅ — AI connection next");
+  },1000);
+}
+
+input.addEventListener("keypress",e=>{
+  if(e.key==="Enter") sendMessage();
+});
+</script>
 
 </body>
 </html>
