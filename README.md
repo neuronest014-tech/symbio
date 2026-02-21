@@ -163,9 +163,29 @@ async function sendMessage(){
   const thinking = addNode("Symbio thinking...", "ai");
 
   // TEMP DEMO RESPONSE (to verify button works)
-  setTimeout(()=>{
-    updateNode(thinking,"Symbio is alive ✅ — AI connection next");
-  },1000);
+ try{
+  const res = await fetch("https://api.openai.com/v1/chat/completions",{
+    method:"POST",
+    headers:{
+      "Content-Type":"application/json",
+      "Authorization":"Bearer YOUR_API_KEY_HERE"
+    },
+    body:JSON.stringify({
+      model:"gpt-4.1-mini",
+      messages:[
+        {role:"system",content:"You are Symbio AI — friendly futuristic companion."},
+        {role:"user",content:text}
+      ]
+    })
+  });
+
+  const data = await res.json();
+  updateNode(thinking,data.choices[0].message.content);
+
+}catch(e){
+  updateNode(thinking,"Error — check API key or browser block");
+}
+
 }
 
 input.addEventListener("keypress",e=>{
