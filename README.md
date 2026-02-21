@@ -7,32 +7,26 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&display=swap" rel="stylesheet">
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-body{
-font-family:'Inter',sans-serif;
-background:#05070d;
-color:#fff;
-overflow-x:hidden;
+body{font-family:'Inter',sans-serif;background:#05070d;color:#fff;overflow-x:hidden}
+
+/* Animated background gradient */
+body::before{
+content:"";
+position:fixed;
+inset:0;
+background:radial-gradient(circle at 20% 20%,#5b7cff33,transparent 40%),
+radial-gradient(circle at 80% 80%,#b44cff33,transparent 40%);
+z-index:-2;
+animation:moveBg 12s infinite alternate ease-in-out;
 }
 
-/* Background glow */
-.bg-glow{
-position:fixed;
-width:1200px;
-height:1200px;
-background:radial-gradient(circle,#5b7cff33,transparent 60%);
-top:-300px;
-left:-300px;
-z-index:-1;
+@keyframes moveBg{
+0%{transform:translate(0,0)}
+100%{transform:translate(-60px,-40px)}
 }
-.bg-glow2{
-position:fixed;
-width:1000px;
-height:1000px;
-background:radial-gradient(circle,#b44cff33,transparent 60%);
-bottom:-300px;
-right:-300px;
-z-index:-1;
-}
+
+/* Starfield */
+canvas{position:fixed;top:0;left:0;z-index:-1}
 
 .container{max-width:1100px;margin:auto;padding:40px 24px}
 
@@ -40,66 +34,32 @@ h1{font-size:64px;font-weight:900;line-height:1.05;letter-spacing:-2px}
 h2{font-size:36px;font-weight:700;margin-bottom:20px}
 p{opacity:.7;font-size:18px;line-height:1.6}
 
-.hero{text-align:center;padding-top:120px;padding-bottom:120px}
+.hero{text-align:center;padding-top:140px;padding-bottom:120px}
 .hero p{margin-top:20px}
 
-.btn{
-margin-top:40px;
-padding:16px 32px;
-border-radius:40px;
-border:1px solid #ffffff22;
-background:linear-gradient(135deg,#5b7cff,#b44cff);
-color:#fff;
-font-weight:600;
-cursor:pointer;
-transition:.3s;
-}
-.btn:hover{transform:translateY(-3px);box-shadow:0 10px 40px #5b7cff44}
+.btn{margin-top:40px;padding:16px 32px;border-radius:40px;border:1px solid #ffffff22;background:linear-gradient(135deg,#5b7cff,#b44cff);color:#fff;font-weight:600;cursor:pointer;transition:.35s}
+.btn:hover{transform:translateY(-4px);box-shadow:0 15px 40px #5b7cff55}
 
-.section{margin-top:140px}
+.section{margin-top:140px;opacity:0;transform:translateY(40px);transition:.8s}
+.section.visible{opacity:1;transform:translateY(0)}
 
-.glass{
-background:rgba(255,255,255,0.05);
-border:1px solid rgba(255,255,255,0.08);
-backdrop-filter:blur(20px);
-border-radius:24px;
-padding:28px;
-}
+.glass{background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.08);backdrop-filter:blur(20px);border-radius:24px;padding:28px;transition:.4s}
+.glass:hover{transform:translateY(-6px);border:1px solid rgba(255,255,255,0.18)}
 
-.grid{
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
-gap:24px;
-margin-top:40px;
-}
-
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:24px;margin-top:40px}
 .card-title{font-weight:700;margin-bottom:8px}
 
-.waitlist{
-text-align:center;
-padding:60px;
-}
+.waitlist{text-align:center;padding:60px}
 
-input,textarea{
-width:100%;
-padding:14px;
-margin-top:12px;
-border-radius:12px;
-border:1px solid #ffffff22;
-background:#0d111a;
-color:#fff;
-}
+input,textarea{width:100%;padding:14px;margin-top:12px;border-radius:12px;border:1px solid #ffffff22;background:#0d111a;color:#fff}
 
 .counter{margin-top:12px;opacity:.5;font-size:14px}
-
 footer{opacity:.4;text-align:center;margin-top:120px;margin-bottom:40px}
-
 </style>
 </head>
 <body>
 
-<div class="bg-glow"></div>
-<div class="bg-glow2"></div>
+<canvas id="stars"></canvas>
 
 <div class="container">
 
@@ -111,9 +71,7 @@ footer{opacity:.4;text-align:center;margin-top:120px;margin-bottom:40px}
 
 <section class="section">
 <h2>From Tools → To Intelligence</h2>
-<div class="glass">
-<p>For decades, humans interacted with software as tools. Project S explores a world where intelligence itself becomes social — participating in conversations, teams, and relationships alongside people.</p>
-</div>
+<div class="glass"><p>For decades, humans interacted with software as tools. Project S explores a world where intelligence itself becomes social — participating in conversations, teams, and relationships alongside people.</p></div>
 </section>
 
 <section class="section">
@@ -149,6 +107,24 @@ footer{opacity:.4;text-align:center;margin-top:120px;margin-bottom:40px}
 <footer>Project S — Building the social layer for intelligence</footer>
 
 </div>
+
+<script>
+/* Scroll reveal */
+const sections=document.querySelectorAll('.section');
+const observer=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible')})},{threshold:.15});
+sections.forEach(s=>observer.observe(s));
+
+/* Starfield */
+const canvas=document.getElementById('stars');
+const ctx=canvas.getContext('2d');
+let stars=[];
+function resize(){canvas.width=innerWidth;canvas.height=innerHeight}
+resize();
+window.onresize=resize;
+for(let i=0;i<120;i++){stars.push({x:Math.random()*canvas.width,y:Math.random()*canvas.height,r:Math.random()*1.2})}
+function draw(){ctx.clearRect(0,0,canvas.width,canvas.height);ctx.fillStyle='white';stars.forEach(s=>{ctx.globalAlpha=Math.random();ctx.beginPath();ctx.arc(s.x,s.y,s.r,0,Math.PI*2);ctx.fill()});requestAnimationFrame(draw)}
+draw();
+</script>
 
 </body>
 </html>
