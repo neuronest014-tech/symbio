@@ -9,7 +9,7 @@
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:'Inter',sans-serif;background:#000;color:#fff;overflow-x:hidden}
 
-section{min-height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:40px;position:relative}
+section{min-height:75vh;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:20px;position:relative}
 
 h1{font-size:64px;font-weight:900;letter-spacing:-2px}
 h2{font-size:36px;font-weight:700}
@@ -19,7 +19,7 @@ p{opacity:.7;font-size:20px;margin-top:16px}
 .visible{opacity:1;transform:translateY(0)}
 
 /* Orb */
-.orb{width:140px;height:140px;border-radius:50%;background:radial-gradient(circle,#7aa2ff,#b44cff);filter:blur(1px);box-shadow:0 0 120px #7aa2ff88;position:absolute;transition:transform .2s}
+.orb{width:140px;height:140px;border-radius:50%;background:radial-gradient(circle,#7aa2ff,#b44cff);filter:blur(1px);box-shadow:0 0 120px #7aa2ff88;position:absolute;transition:transform .2s;animation:float 6s ease-in-out infinite}
 
 /* Chat */
 .chat{width:320px;background:#0f1220;border-radius:20px;padding:20px;text-align:left;border:1px solid #ffffff22}
@@ -37,6 +37,12 @@ p{opacity:.7;font-size:20px;margin-top:16px}
 
 input{padding:14px;border-radius:12px;border:1px solid #ffffff22;background:#0d111a;color:#fff;margin-top:12px;width:260px}
 
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-18px)}}
+
+.node{animation:float 8s ease-in-out infinite}
+
+.typing::after{content:'|';margin-left:4px;animation:blink 1s infinite}
+@keyframes blink{0%,50%,100%{opacity:1}25%,75%{opacity:0}}
 </style>
 </head>
 <body>
@@ -60,7 +66,7 @@ input{padding:14px;border-radius:12px;border:1px solid #ffffff22;background:#0d1
 <!-- Scene 3 -->
 <section>
 <div class="chat fade">
-<div class="bubble ai">I remember our last conversation.</div>
+<div class="bubble ai typing" id="typing">I remember our last conversation.</div>
 <div class="bubble user">You do?</div>
 <div class="bubble ai">I grow with you.</div>
 </div>
