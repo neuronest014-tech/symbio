@@ -154,11 +154,29 @@ function updateNode(node,text){
 }
 
 async function sendMessage(){
- const res = await fetch("http://localhost:3000/chat",{
-  method:"POST",
-  headers:{"Content-Type":"application/json"},
-  body:JSON.stringify({message:text})
-});
+  const text = input.value.trim();
+  if(!text) return;
+
+  addNode(text,"user");
+  input.value="";
+
+  const thinking = addNode("Symbio thinking...", "ai");
+
+  try{
+    const res = await fetch("http://localhost:3000/chat",{
+      method:"POST",
+      headers:{"Content-Type":"application/json"},
+      body:JSON.stringify({message:text})
+    });
+
+    const ai = await res.json();
+    updateNode(thinking,ai);
+
+  }catch(e){
+    updateNode(thinking,"Connection failed — server not reachable");
+  }
+}
+
 
 const ai = await res.json();
 updateNode(thinking,ai);
