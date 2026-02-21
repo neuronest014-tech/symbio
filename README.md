@@ -154,37 +154,14 @@ function updateNode(node,text){
 }
 
 async function sendMessage(){
-  const text = input.value.trim();
-  if(!text) return;
+ const res = await fetch("http://localhost:3000/chat",{
+  method:"POST",
+  headers:{"Content-Type":"application/json"},
+  body:JSON.stringify({message:text})
+});
 
-  addNode(text,"user");
-  input.value="";
-
-  const thinking = addNode("Symbio thinking...", "ai");
-
-  // TEMP DEMO RESPONSE (to verify button works)
- try{
-  const res = await fetch("https://api.openai.com/v1/chat/completions",{
-    method:"POST",
-    headers:{
-      "Content-Type":"application/json",
-      "Authorization":"Bearer YOUR_API_KEY_HERE"
-    },
-    body:JSON.stringify({
-      model:"gpt-4.1-mini",
-      messages:[
-        {role:"system",content:"You are Symbio AI — friendly futuristic companion."},
-        {role:"user",content:text}
-      ]
-    })
-  });
-
-  const data = await res.json();
-  updateNode(thinking,data.choices[0].message.content);
-
-}catch(e){
-  updateNode(thinking,"Error — check API key or browser block");
-}
+const ai = await res.json();
+updateNode(thinking,ai);
 
 }
 
